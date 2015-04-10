@@ -1,9 +1,13 @@
 number_of_files = int(raw_input())
-file_contents= []
+file_descriptions= []
 
 files_that_pass_query1 = 0
 files_that_pass_query2 = 0
 files_that_pass_query3 = 0
+
+for file in xrange(number_of_files):
+    file_description = [ int(x) for x in raw_input().split() ]
+    file_descriptions.append(file_description)
 
 def create_dict(num_array):
     dict = {}
@@ -14,15 +18,10 @@ def create_dict(num_array):
             dict[num] = 1
     return dict
 
-for file in xrange(number_of_files): 
-    file_description = [ int(x) for x in raw_input().split() ]
-    file_content = file_description[1:]
-    file_content = create_dict(file_content)
-    file_contents.append(file_content)
-
 def query_all(file, array):
-    if len(file) < len(array):
+    if file[0] < len(array):
         return 0
+    file = create_dict(file[1:])
     for element in array:
         if (element in file) and (file[element] > 0):
             file[element] -= 1
@@ -32,6 +31,7 @@ def query_all(file, array):
 
 def query_any(file, array):
     array = set(array)
+    file = set(file[1:])
     for element in array:
         if element in file:
             return 1
@@ -42,6 +42,7 @@ def query_some(file, array):
         return 1
     return 0 
 
+# file and array are both lists
 def query_file(file, type_of_query, array):
     global files_that_pass_query1
     global files_that_pass_query2
@@ -60,9 +61,8 @@ for query in xrange(number_of_queries):
     type_of_query = query_description[0]
     elements_of_array = query_description[2:]
 
-    for file in file_contents:
-        file_copy = file.copy()
-        query_file(file_copy, type_of_query, elements_of_array)
+    for file in file_descriptions:
+        query_file(file, type_of_query, elements_of_array)
 
 print files_that_pass_query1
 print files_that_pass_query2
