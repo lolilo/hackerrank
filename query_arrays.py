@@ -21,8 +21,10 @@ for file in xrange(number_of_files):
     file_contents.append(file_content)
 
 def query_all(file, array):
+    if len(file) < len(array):
+        return 0
     for element in array:
-        if element in file and file[element] > 0:
+        if (element in file) and (file[element] > 0):
             file[element] -= 1
         else:
             return 0
