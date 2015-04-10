@@ -29,16 +29,15 @@ def query_all(file, array):
     return 1
 
 def query_any(file, array):
+    array = set(array)
     for element in array:
         if element in file:
             return 1
     return 0
 
 def query_some(file, array):
-    for element in array: 
-        file_copy = file.copy()
-        if (element in file) and (query_all(file_copy, array) == 0):
-            return 1
+    if query_any(file, array) and (query_all(file, array) == 0):
+        return 1
     return 0 
 
 def query_file(file, type_of_query, array):
