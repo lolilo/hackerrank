@@ -50,7 +50,7 @@ def find_matching_paren_index(string):
 def find_smallest_partial(regex_expression):
     regex_set = set(regex_expression)
     if '*' not in regex_set:
-        return 500
+        return -1
 
     regex_index = 0
     length_regex_expression = len(regex_expression)
