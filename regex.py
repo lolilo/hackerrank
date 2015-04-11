@@ -42,3 +42,34 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
     elif char == ')':
         print current_concatenation_length
         return current_concatenation_length
+
+def find_matching_paren_index(string):
+    index = len(string) - 1
+    while index >= 0:
+        if string[index] == '(':
+            return index
+    # assume there is always a match 
+
+def find_smallest_partial(regex_expression):
+    regex_set = set(regex_expression)
+    if '*' not in regex_set:
+        return 500
+
+    regex_index = 0
+    length_regex_expression = len(regex_expression)
+
+# sdljf)a* -- this will just be one or zero
+# df*
+
+    while regex_index < length_regex_expression:
+        char = regex_expression[regex_index]
+        if char == '*':
+            if (regex_index - 1 >= 0):
+                prev_char = regex_expression[regex_index - 1]
+                if prev_char == ')':
+                    matching_paren_index = find_matching_paren_index(regex_expression[:regex_index - 2])
+                    current_min_lenth = find_smallest_string_length(regex_expression[matching_paren_index:regex_index])
+
+    return current_min_lenth
+
+
