@@ -76,3 +76,15 @@ def find_smallest_partial(regex_expression):
         regex_index += 1
 
     return current_min_length
+
+
+def find_final(min_length_of_string, regex_expression):
+    regex_index_for_search = 0
+    previous_concatenation_length = 501
+    current_concatenation_length = 0
+    current_min_length = find_smallest_string_length(regex_partial_to_search, regex_index_for_search, previous_concatenation_length, current_concatenation_length)
+    if current_min_lenth < min_length_of_string:
+        smallest_increment = find_smallest_partial(regex_expression)
+        while current_min_length < min_length_of_string:
+            current_min_length += smallest_increment
+    return current_min_length
