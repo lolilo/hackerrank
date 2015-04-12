@@ -47,7 +47,11 @@ class RegexTest(unittest.TestCase):
         smallest_length = find_smallest_string_length(regex_expression, self.regex_index, self.previous_concatenation_length, self.current_concatenation_length)
         # answer is actually zero, but for this fuction, return 2
         self.assertEqual(smallest_length, 2)
-        
+
+    def test_find_smallest_string_length_parenthesis5(self):
+        regex_expression = '((a)*(ab)*c)*'
+        smallest_length = find_smallest_string_length(regex_expression, self.regex_index, self.previous_concatenation_length, self.current_concatenation_length)
+        self.assertEqual(smallest_length, 1)     
 
     # def test_find_smallest_string_length_parenthesis2(self):
     #     regex_expression = '(ac|vd)*'
@@ -105,9 +109,24 @@ class PartialRegexTest(unittest.TestCase):
         self.assertEqual(smallest_length, 2)  
 
     def test_find_smallest_string_length_parenthesis8(self):
-        regex_expression = '((c|d*)*ab)**'
+        regex_expression = '((c|d*)*ab)*'
         smallest_length = find_smallest_partial(regex_expression)
         self.assertEqual(smallest_length, 2)
+
+    def test_find_smallest_string_length_parenthesis9(self):
+        regex_expression = '((ab)*c*)*'
+        smallest_length = find_smallest_partial(regex_expression)
+        self.assertEqual(smallest_length, 1)  
+
+    def test_find_smallest_string_length_parenthesis10(self):
+        regex_expression = '(ab)*c*'
+        smallest_length = find_smallest_partial(regex_expression)
+        self.assertEqual(smallest_length, 1)  
+
+    def test_find_smallest_string_length_parenthesis11(self):
+        regex_expression = '((a)*(ab)*c)*'
+        smallest_length = find_smallest_partial(regex_expression)
+        self.assertEqual(smallest_length, 1)  
 
 class FinalTest(unittest.TestCase):
 

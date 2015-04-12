@@ -51,7 +51,7 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
                 char = regex_expression[regex_index]
                 if char == '(':
                     paren_stack.append(1)
-                    regex_index += 1
+                    # regex_index += 1
                 regex_index += 1
 
             # found closing paren
@@ -63,17 +63,27 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
 
         regex_index += 1
 
+        print 'add', additional_length
         return additional_length + find_smallest_string_length(regex_expression, regex_index, previous_concatenation_length, current_concatenation_length)
 
     elif char == ')':
-        print current_concatenation_length
+        print 'yo', current_concatenation_length
         return 0
 
 def find_matching_paren_index(string):
-    index = len(string) - 1
+    index = len(string) - 1 # don't count the origina ')'
+    paren_stack = []
+
     while index >= 0:
-        if string[index] == '(':
-            return index
+        char = string[index]
+        if char == '(':
+            if len(paren_stack) > 0:
+                paren_stack.pop()
+            else:
+                return index
+        if char == ')':
+            paren_stack.append(1)
+
         index -= 1
     # assume there is always a match 
 
@@ -82,11 +92,11 @@ def find_smallest_partial(regex_expression):
     if '*' not in regex_set:
         return -1
 
-    regex_index = 0
-    length_regex_expression = len(regex_expression)
+    regex_index = len(regex_expression) - 1
     best_min_length = 1000
 
-    while regex_index < length_regex_expression:
+    while regex_index > 0:
+        print "regex_index", regex_index
         char = regex_expression[regex_index]
         if char == '*':
             if (regex_index - 1 >= 0):
@@ -94,20 +104,25 @@ def find_smallest_partial(regex_expression):
                 if prev_char == ')':
                     regex_partial_to_search = regex_expression[:regex_index - 1]
                     matching_paren_index = find_matching_paren_index(regex_partial_to_search)
-                    regex_partial_to_search = regex_expression[matching_paren_index:regex_index]
-
-                    print regex_partial_to_search
+                    regex_partial_to_search = regex_expression[matching_paren_index + 1:regex_index]
 
                     regex_index_for_search = 0
                     previous_concatenation_length = 501
                     current_concatenation_length = 0
+                    print regex_partial_to_search
                     current_min_length = find_smallest_string_length(regex_partial_to_search, regex_index_for_search, previous_concatenation_length, current_concatenation_length)
+
+                    print 'matcher!', matching_paren_index
+                    regex_index = matching_paren_index
+
                 else:
                     current_min_length = 1
-            best_min_length = min(current_min_length, best_min_length)
-        
-        regex_index += 1
 
+            print 'how many compares'
+            print 'min length', current_min_length
+            best_min_length = min(current_min_length, best_min_length)
+        regex_index -= 1
+            
     return best_min_length
 
 
@@ -125,6 +140,9 @@ def find_final(min_length_of_string, regex_expression):
         if smallest_increment == -1:
             return -1
 
+        print smallest_increment
+        if smallest_increment == 0:
+            return -140599
         while current_min_length < min_length_of_string:
             current_min_length += smallest_increment
 
