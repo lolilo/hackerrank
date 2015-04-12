@@ -6,6 +6,8 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
         return 0
 
     char = regex_expression[regex_index]
+    if char == ')':
+        regex_index += 1
     if ord('a') <= ord(char) <= ord('z'):
         current_concatenation_length += 1
         regex_index += 1
@@ -14,10 +16,11 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
     elif char == '*':
         chars_that_star_applies_to = 1
         if (regex_index - 1 > 0) and (regex_expression[regex_index - 1] == ')'):
-            chars_that_star_applies_to = current_concatenation_length
-        current_concatenation_length = 0
+            chars_that_star_applies_to = 0
+        current_concatenation_length -= chars_that_star_applies_to
         regex_index += 1
-        return (- chars_that_star_applies_to) + find_smallest_string_length(regex_expression, regex_index, previous_concatenation_length, current_concatenation_length)
+
+        return ( - chars_that_star_applies_to) + find_smallest_string_length(regex_expression, regex_index, previous_concatenation_length, current_concatenation_length)
 
     elif char == '|': 
         if previous_concatenation_length > current_concatenation_length:
@@ -33,8 +36,17 @@ def find_smallest_string_length(regex_expression, regex_index, previous_concaten
         new_previous_concatenation_length = 501
         new_current_concatenation_length = 0
         regex_index += 1
-        current_concatenation_length += find_smallest_string_length(regex_expression, regex_index, new_previous_concatenation_length, new_current_concatenation_length)
-        return current_concatenation_length
+
+        additional_length = find_smallest_string_length(regex_expression, regex_index, new_previous_concatenation_length, new_current_concatenation_length)
+
+        current_concatenation_length += additional_length
+
+        while char != ')':
+            regex_index += 1
+            char = regex_expression[regex_index]
+
+        regex_index += 1
+        return additional_length + find_smallest_string_length(regex_expression, regex_index, previous_concatenation_length, current_concatenation_length)
 
     elif char == ')':
         return current_concatenation_length
@@ -50,11 +62,11 @@ def find_matching_paren_index(string):
 def find_smallest_partial(regex_expression):
     regex_set = set(regex_expression)
     if '*' not in regex_set:
-        return 500
+        return -1
 
     regex_index = 0
     length_regex_expression = len(regex_expression)
-    current_min_lenth = 501
+    best_min_length = 1000
 
     while regex_index < length_regex_expression:
         char = regex_expression[regex_index]
@@ -72,16 +84,20 @@ def find_smallest_partial(regex_expression):
                     current_min_length = find_smallest_string_length(regex_partial_to_search, regex_index_for_search, previous_concatenation_length, current_concatenation_length)
                 else:
                     current_min_length = 1
+            best_min_length = min(current_min_length, best_min_length)
         regex_index += 1
 
-    return current_min_length
+    return best_min_length
 
 
 def find_final(min_length_of_string, regex_expression):
-    regex_index_for_search = 0
-    previous_concatenation_length = 501
-    current_concatenation_length = 0
-    current_min_length = find_smallest_string_length(regex_expression, regex_index_for_search, previous_concatenation_length, current_concatenation_length)
+    if regex_expression[0] == '(' and regex_expression[-1] == '*' and regex_expression[-2] == ')':
+        current_min_length = 0
+    else:
+        regex_index_for_search = 0
+        previous_concatenation_length = 501
+        current_concatenation_length = 0
+        current_min_length = find_smallest_string_length(regex_expression, regex_index_for_search, previous_concatenation_length, current_concatenation_length)
 
     if current_min_length < min_length_of_string:
         smallest_increment = find_smallest_partial(regex_expression)
