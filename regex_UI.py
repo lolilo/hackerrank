@@ -104,8 +104,12 @@ def find_final(min_length_of_string, regex_expression):
         if smallest_increment == -1:
             return -1
 
+        print 'this should only print once ever'
         while current_min_length < min_length_of_string:
             current_min_length += smallest_increment
+            print '\nyo'
+            print 'increment', smallest_increment
+            print current_min_length
 
     return current_min_length
 

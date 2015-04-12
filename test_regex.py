@@ -87,5 +87,36 @@ class PartialRegexTest(unittest.TestCase):
         smallest_length = find_smallest_partial(regex_expression)
         self.assertEqual(smallest_length, 1)  
 
+    def test_find_smallest_string_length_parenthesis4(self):
+        regex_expression = '((ab)*c)*'
+        smallest_length = find_smallest_partial(regex_expression)
+        self.assertEqual(smallest_length, 2)  
+
+class FinalTest(unittest.TestCase):
+
+    # sdljf)a* -- this will just be one or zero
+    # df* -- one
+
+    def setUp(self):
+        pass
+
+    def test_final(self):
+        min_length_of_string = 5
+        regex_expression = 'abc'
+        smallest_length = find_final(min_length_of_string, regex_expression)
+        self.assertEqual(smallest_length, -1)
+
+    def test_final2(self):
+        min_length_of_string = 5
+        regex_expression = 'd*(ac|vd)*'
+        smallest_length = find_final(min_length_of_string, regex_expression)
+        self.assertEqual(smallest_length, 5)
+
+    def test_final3(self):
+        min_length_of_string = 10
+        regex_expression = '((ab)*c)*'
+        smallest_length = find_final(min_length_of_string, regex_expression)
+        self.assertEqual(smallest_length, 10)
+
 if __name__ == "__main__":
     unittest.main()
