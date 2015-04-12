@@ -1,5 +1,5 @@
 import unittest
-from regex_UI import *
+from submission_regex import *
 
 class RegexTest(unittest.TestCase):
     def setUp(self):
