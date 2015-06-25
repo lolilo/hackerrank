@@ -12,9 +12,9 @@ def printArray(ar):
 
 def insertionSort(ar):    
     v = ar[-1]
-    index = -2
+    index = len(ar) - 2
     
-    while v < ar[index]:
+    while v < ar[index] and index >= 0:
         ar[index+1] = ar[index]
         printArray(ar)
         index -=1
