@@ -82,7 +82,7 @@ def is_root_of_even_subtree(graph, parent, node):
             children_count += 1
             visited.add(next)
             stack.append(next)
-    return children_count % 2 != 0 if children_count > 0 else False
+    return (children_count + 1) % 2 == 0
 
 
 def create_even_trees(graph):
