@@ -91,10 +91,10 @@ def create_even_trees(graph):
         next_node_set = graph[node].copy()
         for next in next_node_set:
             if is_root_of_even_subtree(graph, node, next):
-                # print node, next
                 graph[node].remove(next)
+                graph[next].remove(node)
                 removed_edges_count += 1
-    return removed_edges_count / 2
+    return removed_edges_count
 
 
 def hackerrank():
