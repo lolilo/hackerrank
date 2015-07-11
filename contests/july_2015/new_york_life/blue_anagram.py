@@ -1,19 +1,16 @@
 # Complete the function below.
 
-def make_dict(str):
-    d = {}
-    for char in str:
-        if d.get(char):
-            d[char] += 1
-        else:
-            d[char] = 1
-    return d
-
 def is_anagram(word):
     d1 = {'E': 1, 'B': 1, 'U': 1, 'L': 1}
-    d2 = make_dict(word)
-    for key in d2.keys():
-        if not d1.get(key) or d1[key] != d2[key]:
+    for char in word:
+        if d1.get(char):
+            if d1[char] < 1:
+                return False
+            d1[char] -= 1
+        else:
+            return False
+    for key in d1.keys():
+        if d1[key] > 0:
             return False
     return True
 
@@ -48,8 +45,4 @@ def replaceBLUE(str):
     return ''.join(str)
 
 str = '   GET    BLUEYO RID OF BLUE AND UEBL BUT LEBUS ARE GOOD    '
-str = ' BL     '
 print replaceBLUE(str)
-print len(replaceBLUE(str))
-
-
