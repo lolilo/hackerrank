@@ -13,5 +13,9 @@ class RegexTest(unittest.TestCase):
         subsets = findsubsets(self.alphabet, 2)
         self.assertEqual(len(set(subsets)), 325)
 
+    def test_countStrings(self):
+        count = countStrings(2, 13)
+        self.assertEqual(count, 2)
+
 if __name__ == "__main__":
     unittest.main()
