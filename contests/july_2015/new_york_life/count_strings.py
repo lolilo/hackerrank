@@ -2,19 +2,37 @@
 import string
 import itertools
 
-def get_permutations(alphabet):
-    return itertools.permutations(alphabet)
+def factorial(n):
+    factorial = 1
+    for n in xrange(1, n+1):
+        factorial *= n
+    return factorial
 
-def  countStrings(l,  v):
+def nPr(n, r):
+    numerator = factorial(n)
+    denominator = factorial(n-r)
+    return numerator/denominator
+
+def findsubsets(alphabet, n):
+    return itertools.combinations(alphabet, n)
+
+def get_subset_value(alphabet_value_array, subset):
+    value = 0
+    for char in subset:
+        char_position = ord(char) - 96
+        value += alphabet_value_array[char_position]
+    return value
+
+def countStrings(l, v):
+    alphabet_value_array = [0] + [x**2 for x in xrange(1, 27)]
     alphabet = set(string.ascii_lowercase)
-    # for letter in alphabet:
-    permutations = get_permutations(alphabet)
-    for perm in permutations:
-        print perm
+    subsets = findsubsets(alphabet, l)
+    count = 0
+    count_increment = nPr(l, l)
+    for subset in subsets:
+        subset_value = get_subset_value(alphabet_value_array, subset)
+        if subset_value == v:
+            count += count_increment
+    return count
 
-
-
-countStrings(3, 3)
-
-# for a in itertools.permutations([1, 1, 2]):
-#     print a
+# print countStrings(2, 13)
