@@ -1,26 +1,27 @@
-# Complete the function below.
+def populate_table(l, value, array):
+    table = [None for x in xrange(value + 1)]
+    table[0] = [[]]
+    for i in xrange(1, value+1):
+        for num in array:
+            if num > i:
+                break # numbers are sorted asending
+            else:
+                if table[i-num] != None:
+                    new_combination_pairs = table[i-num][:]
+                    for new_combination in new_combination_pairs:
+                        to_add = new_combination + [num]
+                        len_to_add = len(to_add)
+                        if (i < value and len_to_add <= l) or (i == value and len_to_add == l):
+                            if table[i] == None:
+                                table[i] = [to_add]
+                            else:
+                                table[i].append(to_add)
 
-def get_num_valid_strings(l, target_value,
- alphabet_value_array, alphabet_value_set):
-    if (l < 1 and target_value > 0) or target_value < 0:
-        return 0
-
-    if l == 1 and target_value in alphabet_value_set:
-        return 2
-
-    if l == 0 and target_value == 0:
-        return 1
-
-    count = 0
-    for value_index in xrange(alphabet_value_array_index):
-        print value_index
-        print alphabet_value_array
-        value = alphabet_value_array[value_index]
-        remaining_value = target_value - value
-        count += get_num_valid_strings(l - 1, remaining_value, value_index + 1, alphabet_value_array, alphabet_value_set)
-    return count
+    combinations = table[value]
+    return len(combinations)
 
 def countStrings(l, v):
     alphabet_value_array = [x**2 for x in xrange(1, 27)]
-    alphabet_value_set = set(alphabet_value_array)
-    return get_num_valid_strings(l, v, 26, alphabet_value_array, alphabet_value_set)
+    return populate_table(l, v, alphabet_value_array)
+
+print countStrings(3, 29)
